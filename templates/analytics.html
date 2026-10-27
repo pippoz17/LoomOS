@@ -1,6 +1,230 @@
-{% extends 'base.html' %}{% block content %}
-<div class="page-head"><div><div class="eyebrow">OVERVIEW / BUSINESS INTELLIGENCE</div><h1>Executive Analytics</h1><p>Cross-functional indicators calculated from the same orders, stock, production and quality records used by the operating modules.</p></div><div class="head-actions"><a class="btn btn-outline" href="/reports">Full reports ↗</a><a class="btn btn-primary" href="/export/orders.csv">↓ Export orders</a></div></div>
-<div class="kpi-grid"><div class="surface kpi-card"><div class="kpi-top">Order book <span class="kpi-icon">₹</span></div><div class="kpi-value">{{ d.revenue|money }}</div><div class="kpi-foot">Current sales order value</div></div><div class="surface kpi-card"><div class="kpi-top">Order count <span class="kpi-icon">⇄</span></div><div class="kpi-value">{{ d.orders|length }}</div><div class="kpi-foot">Across {{ d.pipeline|length }} tracked stages</div></div><div class="surface kpi-card"><div class="kpi-top">Production batches <span class="kpi-icon">▦</span></div><div class="kpi-value">{{ d.batches|length }}</div><div class="kpi-foot">{{ d.batches|sum(attribute='completed_qty')|int }} good units</div></div><div class="surface kpi-card"><div class="kpi-top">Inventory value <span class="kpi-icon">▧</span></div><div class="kpi-value">{{ d.inventory_value|money }}</div><div class="kpi-foot">On-hand × average cost</div></div></div>
-<div class="dash-grid equal"><section class="surface"><div class="panel-head"><div><h2>Order value by customer</h2><p>Top six customers by recorded order book</p></div></div><div class="panel-body">{% set max_v=[by_customer|map(attribute='value')|max,1]|max %}{% for c in by_customer %}<div style="margin-bottom:15px"><div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><span class="small strong">{{ c.name }}</span><span class="small num">{{ c.value|money }}</span></div><div class="pipeline-track" style="height:9px"><div class="pipeline-fill" style="width:{{ (c.value/max_v*100)|round|int }}%"></div></div><div class="secondary-cell">{{ c.orders }} order(s)</div></div>{% endfor %}</div></section><section class="surface"><div class="panel-head"><div><h2>Order distribution by status</h2><p>Order counts and value grouped by current stage</p></div></div><div class="panel-body">{% set max_s=[by_stage|map(attribute='count')|max,1]|max %}{% for s in by_stage %}<div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px"><span class="small">{{ s.stage }}</span><b class="num">{{ s.count }}</b></div><div class="pipeline-track"><div class="pipeline-fill" style="width:{{ (s.count/max_s*100)|round|int }}%"></div></div><div class="secondary-cell">{{ s.value|money }} order value</div></div>{% endfor %}</div></section></div>
-<div class="dash-grid equal"><section class="surface"><div class="panel-head"><div><h2>Quality defect Pareto</h2><p>Ranked by rejected units in recorded inspections</p></div><a class="panel-link" href="/quality">Inspect data ↗</a></div><div class="panel-body">{% set max_q=[(quality|map(attribute='rejected')|list|max if quality else 0),1]|max %}{% for q in quality %}<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div style="width:130px;font-size:10px">{{ q.defect_category }}</div><div class="pipeline-track" style="flex:1"><div class="pipeline-fill" style="width:{{ ((q.rejected or 0)/max_q*100)|round|int }}%;background:{{ '#d9534f' if loop.index==1 else '#d99a26' if loop.index==2 else 'var(--green)' }}"></div></div><b style="width:22px;text-align:right">{{ q.rejected or 0 }}</b></div>{% else %}<div class="empty-state">No defect records yet.</div>{% endfor %}<p class="tiny muted">Interpret defect rates in the context of recorded inspection volume and operating conditions.</p></div></section><section class="surface"><div class="panel-head"><div><h2>Delivery Risk Radar</h2><p>Explainable flags based on schedule and production status</p></div></div><div class="panel-body">{% for o in d.at_risk[:6] %}<div class="audit-row"><span class="audit-mark" style="background:#fff0ed;color:#b74a3e">!</span><div style="flex:1"><b><a class="row-link" href="/orders/{{ o.id }}">{{ o.order_no }} · {{ o.customer_name }}</a></b><p>{{ o.risk_reason }}</p><small>Due {{ o.promised_date }} · Score {{ o.risk_score }}/100</small></div><span class="risk-pill risk-{{ o.risk_level|lower }}">{{ o.risk_level }}</span></div>{% else %}<div class="empty-state"><b>No current high-risk orders</b></div>{% endfor %}</div></section></div>
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-head">
+    <div>
+        <div class="eyebrow">OVERVIEW / BUSINESS INTELLIGENCE</div>
+        <h1>Executive Analytics</h1>
+        <p>Cross-functional indicators calculated from the same orders, stock, production and quality records used by the operating modules.</p>
+    </div>
+    <div class="head-actions">
+        <a class="btn btn-outline" href="/reports">Full reports ↗</a>
+        <a class="btn btn-primary" href="/export/orders.csv">↓ Export orders</a>
+    </div>
+</div>
+
+<!-- KEY PERFORMANCE INDICATORS -->
+<div class="kpi-grid">
+
+    <div class="surface kpi-card">
+        <div class="kpi-top">Order book <span class="kpi-icon">₹</span></div>
+        <div class="kpi-value">{{ d.revenue|money }}</div>
+        <div class="kpi-foot">Current sales order value</div>
+    </div>
+
+    <div class="surface kpi-card">
+        <div class="kpi-top">Order count <span class="kpi-icon">⇄</span></div>
+        <div class="kpi-value">{{ d.orders|length }}</div>
+        <div class="kpi-foot">Across {{ d.pipeline|length }} tracked stages</div>
+    </div>
+
+    <div class="surface kpi-card">
+        <div class="kpi-top">Production batches <span class="kpi-icon">▦</span></div>
+        <div class="kpi-value">{{ d.batches|length }}</div>
+        <div class="kpi-foot">{{ d.batches|sum(attribute='completed_qty')|int }} good units</div>
+    </div>
+
+    <div class="surface kpi-card">
+        <div class="kpi-top">Inventory value <span class="kpi-icon">▧</span></div>
+        <div class="kpi-value">{{ d.inventory_value|money }}</div>
+        <div class="kpi-foot">On-hand × average cost</div>
+    </div>
+
+</div>
+
+<!-- CUSTOMER AND ORDER-STAGE ANALYTICS -->
+<div class="dash-grid equal">
+
+    <section class="surface">
+        <div class="panel-head">
+            <div>
+                <h2>Order value by customer</h2>
+                <p>Top six customers by recorded order book</p>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+            {% if by_customer %}
+                {% set max_v = [by_customer|map(attribute='value')|max, 1]|max %}
+
+                {% for c in by_customer %}
+                    <div style="margin-bottom:15px">
+                        <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px">
+                            <span class="small strong">{{ c.name }}</span>
+                            <span class="small num">{{ c.value|money }}</span>
+                        </div>
+
+                        <div class="pipeline-track" style="height:9px">
+                            <div class="pipeline-fill"
+                                 style="width:{{ (c.value / max_v * 100)|round|int }}%">
+                            </div>
+                        </div>
+
+                        <div class="secondary-cell">{{ c.orders }} order(s)</div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <div class="empty-state">
+                    <b>No customer order data yet</b>
+                    <p>Customer order values will appear here when orders are recorded.</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <section class="surface">
+        <div class="panel-head">
+            <div>
+                <h2>Order distribution by status</h2>
+                <p>Order counts and value grouped by current stage</p>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+            {% if by_stage %}
+                {% set max_s = [by_stage|map(attribute='count')|max, 1]|max %}
+
+                {% for s in by_stage %}
+                    <div style="margin-bottom:13px">
+                        <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px">
+                            <span class="small">{{ s.stage }}</span>
+                            <b class="num">{{ s.count }}</b>
+                        </div>
+
+                        <div class="pipeline-track">
+                            <div class="pipeline-fill"
+                                 style="width:{{ (s.count / max_s * 100)|round|int }}%">
+                            </div>
+                        </div>
+
+                        <div class="secondary-cell">{{ s.value|money }} order value</div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <div class="empty-state">
+                    <b>No order-stage data yet</b>
+                    <p>Order distribution will appear here when order records are available.</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+</div>
+
+<!-- QUALITY AND DELIVERY RISK -->
+<div class="dash-grid equal">
+
+    <section class="surface">
+        <div class="panel-head">
+            <div>
+                <h2>Quality defect Pareto</h2>
+                <p>Ranked by rejected units in recorded inspections</p>
+            </div>
+            <a class="panel-link" href="/quality">Inspect data ↗</a>
+        </div>
+
+        <div class="panel-body">
+
+            {% if quality %}
+                {% set max_q = [(quality|map(attribute='rejected')|max or 0), 1]|max %}
+
+                {% for q in quality %}
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+
+                        <div style="width:130px;font-size:10px">
+                            {{ q.defect_category }}
+                        </div>
+
+                        <div class="pipeline-track" style="flex:1">
+                            <div class="pipeline-fill"
+                                 style="width:{{ ((q.rejected or 0) / max_q * 100)|round|int }}%;background:{{ '#d9534f' if loop.index == 1 else '#d99a26' if loop.index == 2 else 'var(--green)' }}">
+                            </div>
+                        </div>
+
+                        <b style="width:22px;text-align:right">
+                            {{ q.rejected or 0 }}
+                        </b>
+
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <div class="empty-state">
+                    <b>No defect records yet</b>
+                    <p>Quality inspection results will appear here when recorded.</p>
+                </div>
+            {% endif %}
+
+            <p class="tiny muted">
+                Interpret defect rates in the context of recorded inspection volume and operating conditions.
+            </p>
+
+        </div>
+    </section>
+
+    <section class="surface">
+        <div class="panel-head">
+            <div>
+                <h2>Delivery Risk Radar</h2>
+                <p>Explainable flags based on schedule and production status</p>
+            </div>
+        </div>
+
+        <div class="panel-body">
+
+            {% for o in d.at_risk[:6] %}
+                <div class="audit-row">
+
+                    <span class="audit-mark"
+                          style="background:#fff0ed;color:#b74a3e">!</span>
+
+                    <div style="flex:1">
+                        <b>
+                            <a class="row-link" href="/orders/{{ o.id }}">
+                                {{ o.order_no }} · {{ o.customer_name }}
+                            </a>
+                        </b>
+
+                        <p>{{ o.risk_reason }}</p>
+
+                        <small>
+                            Due {{ o.promised_date }} · Score {{ o.risk_score }}/100
+                        </small>
+                    </div>
+
+                    <span class="risk-pill risk-{{ o.risk_level|lower }}">
+                        {{ o.risk_level }}
+                    </span>
+
+                </div>
+
+            {% else %}
+                <div class="empty-state">
+                    <b>No current high-risk orders</b>
+                    <p>Orders requiring delivery-risk attention will appear here.</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+</div>
+
 {% endblock %}
