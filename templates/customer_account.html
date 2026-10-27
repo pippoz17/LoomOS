@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block public_content %}
+<div class="customer-login-wrap"><div class="customer-login-card">
+  <a class="customer-back" href="{{ url_for('customer_portal') }}">← Back to customer workspace</a>
+  <div class="customer-logo"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M5 6v20h5V15l6 8 6-8v11h5V6h-5L16 17 10 6z" fill="currentColor"/><path d="M22 5h5v5h-5z" fill="#C7F36B"/></svg></span>loomOS<span>.</span></div>
+  <div class="eyebrow">ACCOUNT SECURITY</div><h1>Change your password.</h1><p class="customer-muted">Choose a unique password of at least 12 characters.</p>
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category,message in messages %}<div class="flash flash-{{ category }}"><span>!</span>{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  <form method="post" class="customer-login-form">{{ csrf_field() }}<label for="current_password">Current password</label><input id="current_password" name="current_password" type="password" autocomplete="current-password" required><label for="new_password">New password</label><input id="new_password" name="new_password" type="password" minlength="12" autocomplete="new-password" required><label for="confirm_password">Confirm new password</label><input id="confirm_password" name="confirm_password" type="password" minlength="12" autocomplete="new-password" required><button class="customer-primary" type="submit">Update password ↗</button></form>
+  <div class="customer-login-footer">{{ company_name }} · Account security</div>
+</div></div>
+{% endblock %}

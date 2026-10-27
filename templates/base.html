@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or 'LoomOS' }} · {{ company_name|default('LOOMOS TEXTILES') }}</title>
+  <meta name="description" content="LoomOS textile manufacturing ERP and CRM — from fibre to fulfilment.">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('favicon') }}"><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+  <script defer src="{{ url_for('static',filename='app.js') }}"></script>
+</head>
+<body data-theme="{{ company_theme|default('forest') }}">
+{% if current_user %}
+<div class="app-frame" id="appFrame">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 6v20h5V15l6 8 6-8v11h5V6h-5L16 17 10 6z" fill="currentColor"/><path d="M22 5h5v5h-5z" fill="#C7F36B"/></svg></span><span class="brand-copy"><b>loomOS<span>.</span></b><small>TEXTILE OPERATIONS</small></span></a>
+    <div class="workspace-pill"><span class="workspace-dot"></span><span><b>{{ company_name }}</b><small>Company workspace</small></span><span class="chevron">⌄</span></div>
+    <nav class="side-nav" aria-label="Main navigation">
+      {% for group,items in nav_groups %}
+        <div class="nav-group"><div class="nav-label">{{ group }}</div>
+        {% for label,path,icon in items %}
+          {% set module = path.strip('/').replace('/','-') if path != '/' else 'dashboard' %}
+          {% if module_allowed(module) %}<a class="nav-link {% if active==path %}active{% endif %}" href="{{ path }}" title="{{ label }}"><span class="nav-icon">{{ icon }}</span><span>{{ label }}</span>{% if path=='/inventory' %}<i class="nav-count">{{ namespace_low|default('') }}</i>{% endif %}</a>{% endif %}
+        {% endfor %}</div>
+      {% endfor %}
+    </nav>
+    <div class="sidebar-footer"><div class="footer-note"><span class="pulse"></span><span><b>Workspace active</b><small>Access controlled</small></span></div><div class="side-version">LOOMOS CORE <span>v1.0</span></div></div>
+  </aside>
+  <main class="main-shell">
+    <header class="topbar">
+      <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+      <div class="crumbs"><span>{{ page_label or 'WORKSPACE' }}</span><i>/</i><b>{{ title or 'Command Center' }}</b></div>
+      <div class="top-actions">
+        <button class="search-trigger" id="openCommand" title="Search (Ctrl+K)"><span>⌕</span><span>Search anything...</span><kbd>Ctrl K</kbd></button>
+        <a class="icon-button notification-button" href="/tasks" aria-label="Notifications" title="Tasks and notifications">♧<span class="notification-dot"></span></a>
+        <div class="top-divider"></div>
+        <div class="profile-menu"><div class="avatar">{{ current_user.name[:1]|upper }}</div><div class="profile-copy"><b>{{ current_user.name }}</b><small>{{ current_user.role }}</small></div><span class="chevron">⌄</span>
+          <div class="profile-dropdown"><a href="/account">Account security</a><a href="/users">User management</a><a href="/settings">Settings</a><form method="post" action="/logout">{{ csrf_field() }}<button type="submit">Sign out ↗</button></form></div>
+        </div>
+      </div>
+    </header>
+    <section class="page-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category,message in messages %}<div class="flash flash-{{ category }}"><span>{{ '✓' if category=='success' else '!' }}</span>{{ message }}<button onclick="this.parentElement.remove()" aria-label="Dismiss">×</button></div>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+    <footer class="app-footer"><span>LOOMOS · FROM FIBRE TO FULFILMENT</span><span>Workspace records <b>●</b></span></footer>
+  </main>
+</div>
+<div class="command-overlay" id="commandOverlay" aria-hidden="true"><div class="command-box"><div class="command-search"><span>⌕</span><input id="commandInput" placeholder="Search customers, orders, pages..." autocomplete="off"><kbd>ESC</kbd></div><div class="command-hint">QUICK NAVIGATION</div><div class="command-results" id="commandResults"></div><div class="command-foot"><span>↑↓ Navigate</span><span>↵ Open destination</span><span>ESC Close</span></div></div></div>
+<div class="toast-region" id="toastRegion" aria-live="polite"></div>
+{% else %}{% block public_content %}{% endblock %}{% endif %}
+</body></html>

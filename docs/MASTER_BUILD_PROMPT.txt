@@ -1,0 +1,1128 @@
+# MASTER BUILD PROMPT — LOOMOS
+## AI-Powered Textile & Garment Manufacturing ERP + CRM Platform
+
+Act as a senior product designer, enterprise software architect, full-stack developer, textile manufacturing domain expert, and QA engineer.
+
+Your task is to DESIGN AND BUILD a complete, highly polished, functional, responsive web application for a textile and garment manufacturing company.
+
+Do not create a generic corporate website, static admin template, or simple dashboard mockup. Build a realistic enterprise-grade business management platform that connects CRM, sales, order management, production, inventory, quality assurance, logistics, reporting, and financial operations in one coherent workflow.
+
+The final product should look like a premium commercial SaaS application that could be demonstrated to company management during an internship review.
+
+# 1. PRODUCT IDENTITY
+
+Product name: LoomOS
+Product category: Textile ERP + CRM + Manufacturing Intelligence
+Tagline: From Fibre to Fulfilment.
+Industry: Textile mills, garment manufacturers, apparel exporters, fabric wholesalers, private-label manufacturers.
+
+Design philosophy:
+- Premium enterprise software
+- Data-dense but easy to understand
+- Beautiful visual hierarchy
+- Extremely polished UI interactions
+- Functional workflows instead of decorative buttons
+- Designed for daily use by sales teams, production managers, inventory staff, quality inspectors, dispatch teams, and administrators.
+
+Use a configurable company identity so the company name, logo, contact details, currency, and theme can be changed easily.
+
+Default currency: INR (₹).
+Default timezone: Asia/Kolkata.
+Use realistic textile industry terminology and sample business data.
+
+# 2. TECH STACK
+
+First inspect the available project files and identify the existing framework before changing anything.
+
+Preferred stack if starting from scratch:
+- Next.js with App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Lucide icons
+- Recharts for charts
+- Supabase for PostgreSQL database, authentication, and file storage
+- React Hook Form and Zod for forms and validation
+- A suitable table library for filtering, sorting, and pagination.
+
+If the environment already has a working stack, preserve it where reasonable rather than rebuilding unnecessarily.
+
+Use reusable components, typed data models, consistent naming, and a maintainable folder structure.
+
+Important implementation rules:
+- Build actual working pages and workflows, not just a landing page.
+- Persist important changes to the database when backend services are configured.
+- If credentials or database access are unavailable, provide a functional demo mode with realistic seeded data and local persistence, clearly labelled as demo mode.
+- Do not fabricate successful server responses.
+- Include a clear configuration guide and .env.example without real secrets.
+- Never expose service-role keys or private credentials in frontend code.
+- Add loading states, empty states, validation, confirmation dialogs, success notifications, and error handling.
+- Ensure all major navigation links, filters, forms, charts, action menus, and buttons work.
+- Do not use placeholder links, dead buttons, or lorem ipsum.
+- Do not claim integrations are connected when they are not.
+
+# 3. VISUAL DESIGN SYSTEM
+
+Create a distinctive design system. Avoid the appearance of a generic AI-generated admin dashboard.
+
+Visual direction:
+Premium industrial minimalism meets modern enterprise SaaS.
+
+Primary theme:
+- Background: warm off-white #F7F8F5
+- Main text: deep charcoal #17211D
+- Primary green: #176B4D
+- Accent lime: #C7F36B
+- Secondary background: #EDF1EB
+- Borders: #DFE5DE
+- Muted text: #68756D
+- Warning: #D99A26
+- Danger: #D9534F
+- Success: #23845B
+
+Use dark charcoal and green accents for high-priority elements. Reserve lime for selected navigation, key metrics, status highlights, and important calls to action.
+
+Typography:
+- Use a modern sans-serif such as Inter or Geist.
+- Use strong, readable headings.
+- Use tabular numerals for KPIs and financial data.
+- Keep labels compact and data legible.
+
+Layout:
+- Fixed collapsible left sidebar
+- Top navigation with global search, notifications, date controls, quick actions, and user profile
+- Main content with consistent page headers, breadcrumbs, filters, cards, charts, and tables
+- Responsive desktop, tablet, and mobile layouts
+- Dense tables on desktop and well-designed stacked views on mobile
+- Consistent spacing, rounded corners, subtle borders, and restrained shadows
+
+Use real textile and garment imagery only where it adds value. The application itself should primarily use crisp data visualizations, diagrams, icons, status indicators, and tables.
+
+Add subtle motion:
+- Sidebar transitions
+- Animated KPI counters where appropriate
+- Smooth dropdowns
+- Skeleton loading states
+- Chart entrance animations
+- Progress animations
+- Toast notifications
+
+Respect reduced-motion preferences.
+
+# 4. APPLICATION SHELL AND NAVIGATION
+
+Create a complete application shell with the following sidebar groups.
+
+OVERVIEW
+1. Command Center
+2. Executive Analytics
+
+CUSTOMER & SALES
+3. CRM Pipeline
+4. Customers
+5. Enquiries & Quotations
+6. Sales Orders
+
+OPERATIONS
+7. Production Planning
+8. Production Floor
+9. Inventory & Warehouse
+10. Quality Control
+11. Dispatch & Logistics
+
+BUSINESS
+12. Procurement & Suppliers
+13. Invoices & Payments
+14. Reports & Exports
+
+SYSTEM
+15. Notifications & Tasks
+16. User Management
+17. Settings
+
+Use clear active states, tooltips for collapsed navigation, and badges showing meaningful counts, such as pending approvals or low-stock alerts.
+
+Add a global command palette opened using Ctrl+K or Cmd+K. It should support searching pages, customers, orders, inventory items, and available actions.
+
+Include a global quick-create menu for:
+- New customer
+- New enquiry
+- New quotation
+- New sales order
+- New production batch
+- New inventory item
+- New purchase order
+- New quality inspection
+- New dispatch
+
+# 5. COMMAND CENTER DASHBOARD
+
+Create an executive dashboard that immediately communicates the health of the business.
+
+Top KPI cards:
+- Total active orders
+- Total order value
+- Orders in production
+- Orders at risk
+- Inventory valuation
+- Low-stock items
+- On-time delivery percentage
+- Outstanding receivables
+
+Each card should show:
+- Current value
+- Comparison against the previous period where relevant
+- Trend indicator
+- Relevant icon
+- Click-through navigation to the underlying filtered records
+
+Main dashboard sections:
+
+A. Order pipeline
+Visualize the number and value of orders across:
+Enquiry → Quotation → Confirmed → Production → Quality Check → Ready to Dispatch → Dispatched → Delivered.
+
+B. Production performance
+Display planned versus actual output, production completion, rejected units, and efficiency.
+
+C. Order delivery risk
+List orders likely to miss their committed delivery date. Show customer, order number, due date, delay risk, current stage, and recommended action.
+
+D. Inventory health
+Show low-stock materials, critical shortages, slow-moving inventory, and stock value by category.
+
+E. Revenue analytics
+Include revenue trends, monthly order values, customer contribution, and product-category performance.
+
+F. Recent activity
+Show recent orders, stock movements, approvals, production updates, and dispatches.
+
+G. Today's priorities
+Create a practical task list including overdue orders, pending quotations, stock shortages, inspections waiting for approval, and dispatches due today.
+
+H. Smart recommendations
+Generate explainable operational recommendations using actual application data, such as:
+- Reorder a fabric because projected demand exceeds available stock.
+- Expedite a production batch because its delivery buffer is low.
+- Follow up on a quotation that has remained unanswered.
+- Investigate a production line with an unusually high rejection rate.
+
+All dashboard figures must reconcile with the underlying demo records. Do not invent independent numbers for separate widgets.
+
+# 6. CRM AND CUSTOMER MANAGEMENT
+
+Build a functional CRM module.
+
+CRM pipeline:
+New Lead → Contacted → Qualified → Sample Requested → Quotation Sent → Negotiation → Won / Lost.
+
+Features:
+- Kanban board with drag-and-drop stages
+- Lead and opportunity creation
+- Customer profile pages
+- Contact persons and communication details
+- Company type: brand, retailer, wholesaler, exporter, or manufacturer
+- Customer segment and location
+- Lead source
+- Estimated order value
+- Expected closing date
+- Assigned salesperson
+- Next follow-up date
+- Notes and activity history
+- Tasks and reminders
+- Customer tags
+- Search, filters, sorting, and pagination
+
+Customer detail page:
+- Customer overview
+- Contacts
+- Past and active orders
+- Quotations
+- Outstanding invoices
+- Payment history
+- Communication log
+- Documents
+- Internal notes
+- Customer-specific delivery performance
+
+Add a customer 360-degree view that consolidates all relevant commercial information.
+
+Add a follow-up assistant that highlights neglected leads, overdue follow-ups, and high-value opportunities. Suggestions should be rule-based unless a real AI integration is configured.
+
+# 7. ENQUIRIES, QUOTATIONS, AND SALES ORDERS
+
+Create a complete quotation-to-order workflow.
+
+Enquiry fields:
+- Enquiry ID
+- Customer
+- Product category
+- Fabric type
+- Garment type
+- Quantity
+- Size range
+- Colour
+- GSM or fabric specification
+- Printing or embroidery requirements
+- Target price
+- Required delivery date
+- Attachments
+- Notes
+
+Quotation features:
+- Quotation number
+- Customer details
+- Itemised products
+- Quantity
+- Unit price
+- Discounts
+- Tax configuration
+- Additional charges
+- Validity date
+- Payment terms
+- Delivery terms
+- Version history
+- Draft, Sent, Accepted, Rejected, Expired statuses
+
+Generate professional printable quotation documents.
+
+When a quotation is accepted, allow the user to convert it into a sales order while preserving line items and commercial terms.
+
+Sales order fields:
+- Order number
+- Customer
+- Order date
+- Promised delivery date
+- Product and style references
+- SKU
+- Colour
+- Size breakdown
+- Ordered quantity
+- Unit price
+- Tax
+- Total value
+- Assigned production plan
+- Order priority
+- Special instructions
+- Attachments
+
+Include order confirmation, order modification history, cancellation workflow, and approval rules.
+
+Prevent duplicate or accidental order creation during conversion.
+
+# 8. ORDER TRACKING AND CUSTOMER PORTAL
+
+This module is a major priority.
+
+Create a beautiful order tracking page with a clear horizontal or vertical milestone timeline.
+
+Order stages:
+1. Enquiry received
+2. Quotation approved
+3. Order confirmed
+4. Materials allocated
+5. Cutting
+6. Stitching
+7. Finishing
+8. Quality inspection
+9. Packing
+10. Ready for dispatch
+11. Dispatched
+12. Delivered
+
+Each order tracking view must display:
+- Order reference
+- Customer
+- Product and quantity
+- Current stage
+- Stage completion
+- Expected delivery date
+- Delay status
+- Completed milestones
+- Upcoming milestones
+- Relevant notes
+- Shipment information, when available
+
+Create an internal order detail page with tabs for:
+Overview, Production, Materials, Quality, Shipment, Documents, and Activity.
+
+Build a separate customer-facing tracking page using a secure, non-guessable tracking token. The customer should be able to view only the order information authorised for them.
+
+Customer portal features:
+- Order status
+- Progress timeline
+- Estimated delivery
+- Dispatch details
+- Downloadable approved documents
+- Delivery history
+- Request-for-update action
+
+Do not expose internal cost prices, supplier information, employee notes, or other customers' information to external users.
+
+Clearly distinguish actual shipment tracking from simulated shipment data. If carrier APIs are not configured, use manually updated shipment events and a simulated demo carrier.
+
+# 9. PRODUCTION PLANNING AND FACTORY OPERATIONS
+
+Model the actual garment production workflow.
+
+Production stages:
+Material Preparation → Cutting → Stitching → Finishing → Quality Control → Packing.
+
+Production order features:
+- Production batch ID
+- Linked sales order
+- Product/style
+- Planned quantity
+- Completed quantity
+- Rejected quantity
+- Remaining quantity
+- Start date
+- Target completion date
+- Production line
+- Supervisor
+- Assigned operators or team
+- Priority
+- Bill of materials
+- Material reservation
+- Stage-level progress
+- Downtime reason
+- Production notes
+
+Production planning dashboard:
+- Production calendar
+- Gantt-style timeline
+- Work-in-progress board
+- Capacity utilisation
+- Planned versus actual output
+- Bottleneck detection
+- Late production jobs
+- Workload by line
+- Completion forecasts
+
+Provide a production floor interface that is easy to use on a tablet.
+
+Operators should be able to record:
+- Units completed
+- Units rejected
+- Current operation
+- Downtime
+- Defect reasons
+- Shift notes
+
+Every production update must be reflected in the relevant order progress.
+
+Use validation to prevent completed production quantities from exceeding planned quantities without an authorised adjustment.
+
+When material is consumed, update inventory through a stock movement record.
+
+# 10. INVENTORY AND WAREHOUSE MANAGEMENT
+
+Build a serious inventory management module for textile operations.
+
+Support these inventory categories:
+- Yarn
+- Greige fabric
+- Dyed fabric
+- Printed fabric
+- Finished fabric
+- Thread
+- Buttons
+- Zippers
+- Labels
+- Packaging materials
+- Finished garments
+- Accessories
+
+Each inventory item should contain:
+- Item code
+- Item name
+- Category
+- Description
+- Supplier
+- Unit of measurement
+- Available quantity
+- Reserved quantity
+- Available-to-promise quantity
+- Reorder level
+- Safety stock
+- Average cost
+- Warehouse
+- Rack/bin location
+- Batch or lot number
+- Colour
+- Size where applicable
+- GSM or technical specification where applicable
+- Last movement date
+
+Inventory screens:
+- Stock overview
+- Item master
+- Warehouse view
+- Stock movement history
+- Material reservation
+- Goods received
+- Material issue
+- Material return
+- Stock adjustment
+- Stock transfer
+- Cycle counting
+- Slow-moving inventory
+- Inventory valuation
+- Reorder suggestions
+
+Support fabric quantities in metres or kilograms and garment quantities in pieces. Allow additional configurable units.
+
+Create a warehouse stock movement ledger with:
+- Movement ID
+- Date
+- Item
+- Movement type
+- Quantity in
+- Quantity out
+- Reference document
+- Source and destination
+- User
+- Notes
+
+Use an auditable movement-based approach instead of silently changing stock numbers.
+
+Inventory rules:
+- Track on-hand, reserved, and available quantities separately.
+- Prevent negative stock by default.
+- Allow authorised adjustments with a reason.
+- Reserve materials against confirmed production demand.
+- Release reservations when an order is cancelled or modified.
+- Prevent duplicate goods receipts.
+- Record stock movement history.
+- Provide a low-stock alert system.
+
+Create a stock forecasting panel that estimates upcoming material shortages from confirmed orders, bills of materials, existing stock, and reservations.
+
+# 11. QUALITY CONTROL
+
+Create a quality management module.
+
+Support inspections at:
+- Incoming raw materials
+- Fabric inspection
+- Cutting
+- Stitching
+- Finishing
+- Final garment inspection
+- Pre-dispatch
+
+Inspection fields:
+- Inspection ID
+- Linked order or batch
+- Inspector
+- Inspection date
+- Sample size
+- Units inspected
+- Passed units
+- Rejected units
+- Defect category
+- Severity
+- Notes
+- Attachments
+- Corrective action
+- Approval status
+
+Defect examples:
+- Stitching defect
+- Fabric stain
+- Shade variation
+- Measurement deviation
+- Print defect
+- Embroidery defect
+- Loose thread
+- Missing button
+- Incorrect label
+- Packaging defect
+
+Add:
+- Defect Pareto chart
+- First-pass yield
+- Rejection rate
+- Defect trends
+- Supplier quality score
+- Production-line quality score
+- Corrective and preventive action tracking
+
+A failed inspection should trigger a visible alert and require a documented resolution before the relevant batch can proceed when policy requires it.
+
+# 12. PROCUREMENT AND SUPPLIER MANAGEMENT
+
+Create:
+- Supplier directory
+- Supplier profiles
+- Purchase requisitions
+- Purchase orders
+- Goods received notes
+- Supplier invoices
+- Material lead times
+- Supplier performance metrics
+- Purchase approval workflow
+
+Purchase order workflow:
+Draft → Pending Approval → Approved → Sent → Partially Received → Received / Closed.
+
+A goods receipt must increase inventory through a traceable stock movement.
+
+Show purchase order status, expected arrival, delayed deliveries, outstanding quantities, and price history.
+
+Generate reorder recommendations based on stock levels, confirmed demand, lead times, and minimum order quantities.
+
+# 13. DISPATCH AND LOGISTICS
+
+Create a dispatch planning module.
+
+Features:
+- Dispatch schedule
+- Order packing status
+- Packing list
+- Carton count
+- Shipment reference
+- Carrier
+- Tracking number
+- Dispatch date
+- Expected arrival
+- Delivery address
+- Proof of delivery
+- Delivery status
+- Partial shipment support
+- Shipment document management
+
+Dispatch must be restricted to the quantity available and eligible for dispatch under the configured workflow.
+
+Support multiple shipments for one sales order and partial deliveries.
+
+When a shipment is dispatched, update the order timeline and record the corresponding inventory movement.
+
+When proof of delivery is recorded, update the shipment and order status according to the configured business rules.
+
+# 14. INVOICES, PAYMENTS, AND BASIC FINANCIAL VISIBILITY
+
+Create a practical operational finance module.
+
+Features:
+- Customer invoices
+- Supplier bills
+- Payment recording
+- Partial payments
+- Outstanding balances
+- Overdue invoices
+- Due-date reminders
+- Payment terms
+- Credit notes or adjustments
+- Receivables ageing
+- Payables overview
+
+Invoice statuses:
+Draft, Issued, Partially Paid, Paid, Overdue, Cancelled.
+
+Validate that payments do not exceed outstanding amounts unless handled through an explicitly supported credit or advance workflow.
+
+Calculate invoice totals consistently using line items, discounts, taxes, and additional charges.
+
+Support configurable tax rates. Do not hard-code assumptions that every customer or product uses the same tax rate.
+
+This is an operational business management module, not a replacement for statutory accounting software.
+
+# 15. REPORTS AND EXECUTIVE ANALYTICS
+
+Build a professional reports centre with filters for date range, customer, product, status, warehouse, and production line.
+
+Required reports:
+1. Sales performance
+2. Order status
+3. Order ageing
+4. On-time delivery
+5. Production output
+6. Production efficiency
+7. Quality defects
+8. Inventory valuation
+9. Low-stock items
+10. Inventory movement ledger
+11. Material consumption
+12. Procurement performance
+13. Supplier lead times
+14. Customer receivables ageing
+15. Customer profitability, where cost data is available
+16. WIP report
+17. Dispatch performance
+18. Employee or production-line performance, subject to permissions
+
+Use charts where they genuinely aid understanding.
+
+Every report must use the same underlying data as the relevant operational module.
+
+Include:
+- Date filters
+- Search
+- Sorting
+- Pagination
+- CSV export
+- Printable report layout
+- PDF export where a reliable implementation is available
+
+Exports should respect active filters and permissions.
+
+# 16. EXTRAORDINARY FEATURES — DIFFERENTIATORS
+
+These features should make the product stand out from ordinary ERP dashboards.
+
+A. TEXTILE INTELLIGENCE COPILOT
+
+Create an in-app assistant interface that answers questions about available application data.
+
+Example questions:
+- Which orders are at risk of missing delivery?
+- Which materials should we reorder this week?
+- Which customers have the highest outstanding balances?
+- Why has the rejection rate increased?
+- Which production line is falling behind?
+- What is the current value of available inventory?
+
+Implement a useful local, rule-based analytics engine initially. It must read application data and generate explainable answers rather than returning canned responses.
+
+If a real LLM integration is configured later, make it optional and secure. Never pretend a language model is connected if it is not.
+
+B. DELIVERY RISK RADAR
+
+Create an order risk score based on:
+- Remaining production quantity
+- Time remaining until delivery
+- Material availability
+- Stage delays
+- Quality failures
+- Supplier delays
+
+Classify orders as Low, Medium, High, or Critical risk.
+
+Explain why each order received its score and recommend the next action.
+
+Do not label heuristic scores as scientifically validated predictions.
+
+C. MATERIAL DEMAND FORECASTER
+
+Estimate upcoming material demand using:
+- Confirmed sales orders
+- Bill of materials
+- Available stock
+- Reservations
+- Supplier lead times
+- Safety stock
+
+Show projected shortages, quantities to procure, and the dates when shortages may occur.
+
+Label estimates clearly when they rely on demo or incomplete data.
+
+D. LIVE OPERATIONS COMMAND MAP
+
+Create a visual operations view showing warehouses, production lines, pending material transfers, and shipment activity.
+
+If geographic data or a map provider is unavailable, use an elegant interactive factory layout or logistics diagram rather than a fake real-world map.
+
+E. DIGITAL PRODUCT PASSPORT
+
+Allow each garment style or production batch to have a digital passport containing:
+- Style code
+- Fabric composition
+- Colour and size information
+- Production batch
+- Quality results
+- Care instructions
+- Approved certifications, if recorded
+- Shipment and delivery milestones
+
+Generate a QR code for the passport or customer-facing tracking page.
+
+The QR code must point to a real route in the application and must not reveal confidential internal information.
+
+F. WHAT-IF BUSINESS SIMULATOR
+
+Let managers change assumptions such as:
+- Production capacity increases by 10%
+- Supplier delivery delayed by three days
+- Material costs increase by 5%
+- Rejection rate reduced by 2 percentage points
+- Demand increases by 15%
+
+Calculate estimated effects on capacity, material demand, order completion, or costs using transparent formulas.
+
+Display assumptions, baseline values, and projected values side by side. Do not present estimates as guaranteed outcomes.
+
+G. WASTE AND SUSTAINABILITY TRACKER
+
+Track:
+- Fabric consumption
+- Cutting waste
+- Reusable offcuts
+- Rejected garments
+- Water and energy data where available
+- Waste generated by batch
+- Material utilisation percentage
+
+Provide a dashboard with clearly labelled measured or manually entered values.
+
+Do not invent sustainability certifications, emissions reductions, or environmental claims.
+
+H. SMART REORDER PLANNER
+
+Create an interactive procurement recommendation board that identifies items needing replenishment.
+
+Show:
+- Current available stock
+- Forecast demand
+- Safety stock
+- Supplier lead time
+- Suggested order quantity
+- Estimated purchase value
+- Reason for recommendation
+
+Allow authorised users to convert a recommendation into a purchase requisition.
+
+I. SAMPLE AND APPROVAL WORKFLOW
+
+For fashion and garment manufacturing, manage:
+- Design/sample request
+- Fabric swatch approval
+- Fit sample approval
+- Size set approval
+- Pre-production sample
+- Final production approval
+
+Store version history, feedback, responsible person, dates, and attachments.
+
+J. AUDIT TRAIL AND EXCEPTION CENTRE
+
+Record important changes such as:
+- Order status updates
+- Price changes
+- Inventory adjustments
+- Production quantity updates
+- Quality approvals
+- Payment changes
+- User permission changes
+
+The exception centre should bring together overdue orders, stock shortages, quality failures, late suppliers, overdue invoices, and pending approvals.
+
+Provide a resolution status and responsible user for each actionable exception.
+
+# 17. DATABASE AND BUSINESS LOGIC
+
+Design a proper relational schema with suitable foreign keys, indexes, constraints, timestamps, and migration scripts.
+
+Suggested entities:
+- users
+- roles
+- permissions
+- customers
+- customer_contacts
+- leads
+- opportunities
+- crm_activities
+- enquiries
+- quotations
+- quotation_items
+- sales_orders
+- sales_order_items
+- products
+- product_variants
+- bills_of_materials
+- bom_items
+- production_orders
+- production_stages
+- production_updates
+- inventory_items
+- warehouses
+- warehouse_locations
+- inventory_movements
+- inventory_reservations
+- suppliers
+- purchase_requisitions
+- purchase_orders
+- purchase_order_items
+- goods_receipts
+- inspections
+- defects
+- shipments
+- shipment_events
+- invoices
+- invoice_items
+- payments
+- attachments
+- notifications
+- tasks
+- audit_logs
+- product_passports
+
+Use sensible relationships and avoid duplicating the same business facts in unrelated tables.
+
+Business rules:
+- Use unique identifiers for business documents.
+- Use decimal-safe representations for financial calculations.
+- Use transactions for operations that modify multiple related records.
+- Keep a traceable inventory ledger.
+- Protect authorised workflow transitions.
+- Validate all incoming data on the server.
+- Enforce tenant or company isolation if multi-company support is introduced.
+- Use server-side permission checks, not merely hidden frontend buttons.
+- Never trust client-provided prices, totals, permissions, or inventory balances.
+- Use secure authentication and password handling.
+- Record who performed important actions.
+- Add appropriate database constraints and error handling.
+
+If implementing a demo-only fallback, keep the data layer modular so it can be replaced by the real database later without rewriting every page.
+
+# 18. AUTHENTICATION AND ROLE-BASED ACCESS
+
+Implement login and logout if supported by the configured backend.
+
+Suggested roles:
+- Administrator
+- Sales Manager
+- Sales Executive
+- Production Manager
+- Production Operator
+- Inventory Manager
+- Quality Inspector
+- Procurement Manager
+- Finance Executive
+- Dispatch Manager
+- Read-only Executive
+
+Each role should have appropriate access to pages and operations.
+
+Examples:
+- Production operators can update assigned production work but cannot change sales prices.
+- Inventory staff can record stock movements but cannot modify financial permissions.
+- Sales staff can manage assigned customers and quotations.
+- Finance staff can record authorised invoice payments.
+- Administrators can manage configuration and user access.
+
+Use least-privilege access.
+
+If authentication has not been configured, clearly label the app as a demo and do not claim that role-based security is enforced in production.
+
+# 19. SEED DATA AND DEMONSTRATION EXPERIENCE
+
+Populate the application with coherent, realistic demo data:
+- At least 12 customers
+- At least 20 inventory items
+- At least 10 sales orders in different stages
+- At least 6 production batches
+- At least 5 suppliers
+- At least 8 CRM leads
+- At least 6 quotations
+- At least 5 quality inspections
+- At least 5 shipments
+- At least 6 invoices
+
+Use plausible garment and textile products such as:
+- Cotton T-shirts
+- Polo shirts
+- Hoodies
+- School uniforms
+- Corporate uniforms
+- Woven shirts
+- Denim garments
+- Cotton fabric rolls
+- Dyed fabric
+- Printed fabric
+- Thread and trims
+
+Make relationships consistent. For example:
+- Orders reference real customers.
+- Production batches reference real orders.
+- Material requirements reference actual inventory items.
+- Inventory movements affect stock balances.
+- Shipments reference actual orders.
+- Invoices reference real customers and orders.
+- Payments update invoice balances.
+- Quality inspections reference actual production batches.
+
+Clearly display a "DEMO DATA" indicator when using seeded records.
+
+Create a reset-demo-data action with a confirmation dialog.
+
+# 20. MICRO-INTERACTIONS AND USABILITY
+
+Implement:
+- Global search
+- Command palette
+- Quick-create menu
+- Table filters
+- Sorting
+- Pagination
+- Saved filter presets where feasible
+- Bulk selection and actions where safe
+- Row-level action menus
+- Drawer-based record previews
+- Detail pages with meaningful tabs
+- Toast notifications
+- Confirmation dialogs
+- Inline editing where appropriate
+- Empty states with useful next actions
+- Skeleton loaders
+- Validation messages beside fields
+- Responsive navigation
+- Keyboard accessibility
+- Clear status badges
+- Helpful tooltips
+- Breadcrumbs
+- Notification centre
+- Activity timeline
+
+Use colour consistently:
+- Green: completed or healthy
+- Amber: warning or pending
+- Red: critical, overdue, or failed
+- Blue: informational or in progress
+- Grey: draft or inactive
+
+Never rely on colour alone to communicate status.
+
+# 21. REQUIRED PAGES AND IMPLEMENTATION ORDER
+
+Build in the following order so the product remains coherent.
+
+PHASE 1 — FOUNDATION
+1. Application shell and navigation
+2. Design system and reusable components
+3. Data models and database setup
+4. Demo seed data
+5. Command Center
+
+PHASE 2 — CORE COMMERCIAL FLOW
+6. CRM pipeline
+7. Customer management
+8. Enquiries and quotations
+9. Sales order management
+10. Order detail and tracking
+
+PHASE 3 — OPERATIONS
+11. Inventory and warehouse
+12. Production planning and floor
+13. Quality control
+14. Procurement
+15. Dispatch and logistics
+
+PHASE 4 — BUSINESS INTELLIGENCE
+16. Invoices and payments
+17. Reports and exports
+18. Delivery Risk Radar
+19. Material Demand Forecaster
+20. Textile Intelligence Copilot
+21. What-if Simulator
+22. Sustainability and product passports
+
+PHASE 5 — HARDENING
+23. Permissions
+24. Validation and error handling
+25. Responsive design
+26. Accessibility
+27. Tests
+28. Documentation and deployment
+
+If the environment has limited output or execution capacity, prioritise a fully functional core workflow over superficial implementation of every advanced feature.
+
+# 22. ACCEPTANCE TESTS
+
+The product is not complete until the important flows can be demonstrated end to end.
+
+Test these scenarios:
+
+SCENARIO A — CRM TO ORDER
+1. Create a customer.
+2. Create an enquiry.
+3. Generate a quotation.
+4. Edit the quotation.
+5. Mark it accepted.
+6. Convert it into a sales order.
+7. Confirm the new order appears on the dashboard.
+
+SCENARIO B — INVENTORY TO PRODUCTION
+1. Create or select a sales order.
+2. Create a production batch.
+3. Define material requirements.
+4. Reserve available materials.
+5. Record material issue.
+6. Record cutting and stitching progress.
+7. Record completed and rejected units.
+8. Verify the order progress and inventory balances update correctly.
+
+SCENARIO C — QUALITY TO DISPATCH
+1. Record a quality inspection.
+2. Record a defect.
+3. Resolve or reject the batch according to policy.
+4. Approve eligible finished quantity.
+5. Create a dispatch.
+6. Generate a shipment record.
+7. Update tracking milestones.
+8. Record delivery and verify final order status.
+
+SCENARIO D — PROCUREMENT
+1. Identify a material shortage.
+2. Create a purchase requisition.
+3. Approve it.
+4. Create a purchase order.
+5. Record a goods receipt.
+6. Verify inventory increases through a stock movement record.
+
+SCENARIO E — FINANCE
+1. Generate an invoice for an eligible order.
+2. Record a partial payment.
+3. Verify the outstanding balance.
+4. Record the remaining payment.
+5. Verify that the invoice is marked paid.
+
+SCENARIO F — REPORTING
+1. Apply a date filter.
+2. Filter orders by status.
+3. Export the visible records.
+4. Verify that exported data respects the filters.
+5. Confirm the dashboard and reports reflect the same underlying records.
+
+SCENARIO G — PERMISSIONS
+1. Sign in with a restricted role.
+2. Attempt an unauthorised action.
+3. Verify that the server rejects it.
+4. Verify that sensitive information is not returned to the user.
+
+SCENARIO H — PERSISTENCE
+1. Create or update a record.
+2. Reload the application.
+3. Verify that the record persists in the configured database or explicitly documented demo storage.
+
+# 23. FINAL DELIVERY REQUIREMENTS
+
+Deliver an actual working application, not just a design description.
+
+Include:
+- Complete source code
+- Reusable frontend components
+- Backend routes or server actions
+- Database schema and migrations
+- Seed data
+- Environment variable example
+- README with installation and startup instructions
+- Demo-mode instructions
+- Production deployment instructions
+- Tests for critical business logic
+- Clear list of implemented features
+- Clear list of any incomplete features or integrations requiring credentials
+
+Start by inspecting the environment and presenting a concise implementation plan. Then implement the application in the available project environment.
+
+Do not stop after generating a plan, mockup, homepage, or dashboard screenshot. Continue building the actual application, run it if possible, inspect for errors, and fix the issues you can verify.
+
+When finished, provide:
+1. The application entry URL or preview.
+2. Instructions to run it locally.
+3. Instructions to configure the database.
+4. Demo login details only if a real demo login has been implemented.
+5. The main completed workflows.
+6. Known limitations and next steps.
+
+The final result should feel like a real textile operations platform: sophisticated, fast, visually memorable, internally consistent, and usable by an actual manufacturing business.
