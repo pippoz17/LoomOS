@@ -16,7 +16,8 @@ DB_PATH = Path(os.environ.get('LOOMOS_DATABASE', _DEFAULT_DB_PATH))
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 # Vercel serves files in /public through its CDN. Keep Flask's static endpoint
 # aligned with that folder so templates continue to generate /static/... URLs.
-app = Flask(__name__, static_folder='public/static', static_url_path='/static')
+app = Flask(__name__)
+app.static_folder = str(BASE_DIR / 'public' / 'static')
 APP_ENV = os.environ.get('LOOMOS_ENV', 'development').strip().lower()
 _configured_secret = os.environ.get('LOOMOS_SECRET_KEY', '').strip()
 if APP_ENV == 'production' and len(_configured_secret) < 32:
